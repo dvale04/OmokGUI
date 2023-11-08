@@ -40,7 +40,9 @@ public class BoardPanel extends JPanel {
         this.addMouseListener(listener);
     }
     
-
+    protected void paintComponent(Graphics g) {
+    	
+    }
     public class ClickListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
