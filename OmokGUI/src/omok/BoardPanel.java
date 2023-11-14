@@ -1,69 +1,74 @@
 package omok;
 
 import javax.swing.*;
-import java.awt.FlowLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BoardPanel extends JPanel {
-	public static void main(String[] args) {
-	}
     private static final long serialVersionUID = 1L;
-	private Board board;
-    private boolean isBlack = true; 
+    static final int rows = 16;
+    static final int cols = 16;
+    private char[][] board;
+    private List<Stone> stones;
+   
 
-    private JComboBox<String> opponentSelector;
-    private JButton playButton;
+    public BoardPanel() {
+        board = new char[rows][cols];
+        stones = new ArrayList<>();
+        resetBoard();
 
-    public BoardPanel(Board board) {
-        this.board = board;
+    }
+   
 
-      
-        String[] opponents = {"Human", "Computer"};
-        opponentSelector = new JComboBox<>(opponents);
-
-      
-        playButton = new JButton("Play");
-        playButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedOpponent = (String) opponentSelector.getSelectedItem();
-                JOptionPane.showMessageDialog(null, "Selected opponent: " + selectedOpponent);
+    public void resetBoard() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                board[i][j] = ' ';
             }
         }
-       );
-        setLayout(new FlowLayout());
-        add(opponentSelector);
-        add(playButton);
-
-        ClickListener listener = new ClickListener();
-        this.addMouseListener(listener);
+        stones.clear();
+        repaint();
     }
-    
+
+    @Override
     protected void paintComponent(Graphics g) {
-    	
-    }
-    public class ClickListener extends MouseAdapter {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            int width = getWidth() / board.getSize();
-            int height = getHeight() / board.getSize();
-            
-            int x = e.getX() / width;
-            int y = e.getY() / height;
-            
-            if (board.placeStone(x, y, isBlack ? 'B' : 'W')) {
-                isBlack = !isBlack;
-                repaint();
-                if (board.checkForWin(x, y, isBlack ? 'B' : 'W')) {
-                    JOptionPane.showMessageDialog(null, "Player " + (isBlack ? "Black" : "White") + " is winner.");
-                    board.reset();
-                }
+        super.paintComponent(g);
+        int boardWidth = getWidth();
+        int boardHeight = getHeight();
+
+        g.setColor(Color.ORANGE);
+        g.fillRect(0, 0, boardWidth, boardHeight);
+
+        g.setColor(Color.BLACK);
+        int rowHeight = boardHeight / rows;
+        int colWidth = boardWidth / cols;
+        for (int i = 0; i < rows; i++)
+            g.drawLine(0, i * rowHeight, boardWidth, i * rowHeight);
+        for (int j = 0; j < cols; j++)
+            g.drawLine(j * colWidth, 0, j * colWidth, boardHeight);
+
+        if (stones != null) {
+            for (Stone stone : stones) {
+                stone.draw(g);
+            }
             }
         }
+
+
+
+	public boolean placeStone(int x, int y, char currentPlayer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean placeStone(int x, int y, char currentPlayer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
-
-
-
-
-
