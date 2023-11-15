@@ -13,12 +13,18 @@ public class StonePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private List<Stone> stones = new LinkedList<Stone>();
 	
+	
 	public StonePanel() {
         this.setPreferredSize(new Dimension(400, 400)); // Adjust the size as needed
     }
 	
 	public void addStone(int row, int col, char player, int rows, int cols) {
 	    if (row >= 0 && row < rows && col >= 0 && col < cols) {
+	    	
+	    	        if (stones.stream().anyMatch(stone -> stone.getX() == col && stone.getY() == row)) {
+	    	            System.out.println("Stone already exists at Row=" + row + ", Col=" + col);
+	    	            return; // Exit the method if a stone already exists at the position
+	    	        }
 	        int rowHeight = getHeight() / rows;
 	        int colWidth = getWidth() / cols;
 	        int diameter = (int) (Math.min(rowHeight, colWidth) * 0.8); 
@@ -33,6 +39,8 @@ public class StonePanel extends JPanel {
 	        Stone newStone = new Stone(x, y, diameter, (player == 'X') ? Color.WHITE : Color.BLACK);
 	        stones.add(newStone);
 	        repaint();
+	        
+	        
 
 	        System.out.println("Stones in the list: " + stones.size());
 	        for (Stone stone : stones) {
@@ -42,9 +50,13 @@ public class StonePanel extends JPanel {
 	                    ", X=" + x + ", Y=" + y + ", Diameter=" + diameter + ", Player=" + player +
 	                    ", Color=" + ((player == 'X') ? "WHITE" : "BLACK"));
 	        }
-
+	    
 	    }
+	
+
 	}
+	    
+	
 
         public List<Stone> getStones() {
             return stones;
@@ -62,7 +74,10 @@ public class StonePanel extends JPanel {
 		}	
 	
 		
-	
+	}
+
+	public void setOmokLogic(OmokLogic omokLogic) {
+		// TODO Auto-generated method stub
 		
 	}
 }

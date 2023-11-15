@@ -37,5 +37,18 @@ public class Stone {
 		g.setColor(color);
 		g.fillOval(x, y, diameter, diameter);
 	}
+
 	
-}
+	public static boolean isFilled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean checkForWin(int x2, int y2, char currentPlayer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	}
+	
+

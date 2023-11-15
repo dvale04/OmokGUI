@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -16,6 +17,7 @@ public class OmokGUI {
 	 private JPanel panel = new JPanel();
 	 private JMenuBar menuBar;
 	 private OmokClickListener omokClickListener;
+	 private OmokLogic omokLogic;
 	
 	 
     public OmokGUI(BoardPanel boardPanel) {
@@ -93,8 +95,9 @@ public class OmokGUI {
         panel.add(toolBar, BorderLayout.NORTH);
     
      
-      
-        this.omokClickListener = new OmokClickListener(boardPanel, stonePanel);
+        this.omokLogic = new OmokLogic(boardPanel, stonePanel, this);
+        this.omokClickListener = new OmokClickListener(boardPanel, stonePanel, this.omokLogic);
+
         boardPanel.addMouseListener(omokClickListener);
         
         panel.add(boardPanel, BorderLayout.CENTER);
@@ -118,6 +121,20 @@ public class OmokGUI {
         		}
         	}
         });
+    }
+    public void showWinMessage(char winner) {
+    JOptionPane.showMessageDialog(panel, "Player " + winner + " wins!");
+    int choice = JOptionPane.showConfirmDialog(panel, "Start a new game?", "New Game", JOptionPane.YES_NO_OPTION);
+    if (choice == JOptionPane.YES_OPTION) {
+        boardPanel.resetBoard();
+        stonePanel.setStones(new ArrayList<>()); // Clear stones in StonePanel
+        stonePanel.repaint();
+        omokLogic.resetGame(); // Reset the game logic
+    }
+}
+
+    public void showDrawMessage() {
+        JOptionPane.showMessageDialog(panel, "It's a draw!");
     }
      
     public JPanel getPanel() {
